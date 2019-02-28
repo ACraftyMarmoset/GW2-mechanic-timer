@@ -1,0 +1,195 @@
+﻿<Window x:Class="MechanicTimer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MechanicTimer"
+        mc:Ignorable="d"
+        Title="MainWindow" WindowStyle="None" AllowsTransparency="True"
+        Height="400" Width="300" ResizeMode="CanResizeWithGrip">
+    <Window.Resources>
+        <Style TargetType="Image">
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+        </Style>
+    </Window.Resources>
+    <Window.Background>
+        <SolidColorBrush Color="Black" Opacity="0.4"/>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Rectangle Name="DragBar" Fill="Black" MouseLeftButtonDown="DragBar_MouseLeftButtonDown"/>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="cbxEncounter"
+                      Grid.Row="0" Grid.Column="0"
+                      Margin="5,5,5,5"
+                      ItemsSource="{Binding Encounters}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Key}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ToggleButton x:Name="tgbEdit"
+                          Grid.Row="0" Grid.Column="1"
+                          Margin="5,5,5,5">
+                <Image Source="/Buttons/Edit.png"/>
+            </ToggleButton>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="0">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=tgbEdit, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <ItemsControl ItemsSource="{Binding ElementName=cbxEncounter, Path=SelectedItem.Value.Mechanics}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DataTemplate.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="AntiqueWhite"/>
+                            </Style>
+                        </DataTemplate.Resources>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+                                           Text="{Binding Name}"/>
+                                <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
+                                        Command="{Binding BeginCommand}">
+                                    <Image Source="/Buttons/Play.png"/>
+                                </Button>
+                                <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
+                                        Command="{Binding PauseCommand}">
+                                    <Image Source="/Buttons/Pause.png"/>
+                                </Button>
+                                <Button Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
+                                        Command="{Binding ResetCommand}">
+                                    <Image Source="/Buttons/Undo.png"/>
+                                </Button>
+                            </Grid>
+                            <Grid Grid.Row="1" Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="64"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+                                       Source="{Binding CurrentStep.Icon}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           Text="{Binding CurrentStep.Description}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2"
+                                           VerticalAlignment="Center" HorizontalAlignment="Right"
+                                           Text="{Binding CurrentTime}"/>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="0">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=tgbEdit, Path=IsChecked}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <ItemsControl ItemsSource="{Binding ElementName=cbxEncounter, Path=SelectedItem.Value.Mechanics}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DataTemplate.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="AntiqueWhite"/>
+                            </Style>
+                        </DataTemplate.Resources>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+                                         Text="{Binding Name}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
+                                         Text="{Binding Start}"/>
+                                <TextBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
+                                         Text="{Binding Frequency}"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
+                                         Text="{Binding Delay}"/>
+                            </Grid>
+                            <ItemsControl ItemsSource="{Binding Steps}" Grid.Row="1" Grid.Column="0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DataTemplate.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="AntiqueWhite"/>
+                                            </Style>
+                                        </DataTemplate.Resources>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="64"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+                                                   Source="{Binding Icon}"/>
+                                            <TextBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
+                                                     Text="{Binding Description}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Grid Grid.Row="2" Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+                                        Command="{Binding AddStepCommand}">
+                                    <Image Source="/Buttons/Add.png"/>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+</Window>
