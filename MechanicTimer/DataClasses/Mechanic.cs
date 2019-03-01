@@ -15,7 +15,7 @@ using MechanicTimer.Utilities;
 namespace MechanicTimer.DataClasses
 {
 
-    internal class Mechanic : INotifyPropertyChanged
+    internal class Mechanic : Notifier
     {
         private string name;
         public string Name
@@ -113,7 +113,7 @@ namespace MechanicTimer.DataClasses
         {
             get
             {
-                return Steps?[Index];
+                return Steps != null && Steps.Count > 0 ? Steps[Index] : null;
             }
         }
 
@@ -186,7 +186,22 @@ namespace MechanicTimer.DataClasses
 
         public Mechanic()
         {
-            Name = ResourceCache.DEFAULT_MECHANIC_NAME;
+            Name = ResourceCache.LOADING_TEXT;
+            Start = 30;
+            Frequency = 30;
+            Delay = 5;
+            Autostart = true;
+            Autohide = false;
+            Steps = new ObservableCollection<Step>();
+
+            Index = 0;
+            CurrentTime = Start;
+            Timer.Tick += Timer_Tick;
+        }
+
+        public Mechanic(string name)
+        {
+            Name = name;
             Start = 30;
             Frequency = 30;
             Delay = 5;
@@ -249,12 +264,6 @@ namespace MechanicTimer.DataClasses
                 Index = (Index + 1) % Steps.Count();
                 CurrentTime = Frequency - Delay;
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

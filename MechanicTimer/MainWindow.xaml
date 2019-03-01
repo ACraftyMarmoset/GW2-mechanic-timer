@@ -7,34 +7,83 @@
         mc:Ignorable="d"
         Title="MainWindow" WindowStyle="None" AllowsTransparency="True"
         Height="400" Width="300" ResizeMode="CanResizeWithGrip">
+    <Window.Resources>
+        <!-- Button Icons -->
+        <BitmapImage x:Key="AddIcon" UriSource="./Buttons/AddLight.png"/>
+        <BitmapImage x:Key="CrossIcon" UriSource="./Buttons/CrossLight.png"/>
+        <BitmapImage x:Key="DeleteIcon" UriSource="./Buttons/DeleteLight.png"/>
+        <BitmapImage x:Key="EditIcon" UriSource="./Buttons/EditLight.png"/>
+        <BitmapImage x:Key="EyeClosedIcon" UriSource="./Buttons/EyeClosedLight.png"/>
+        <BitmapImage x:Key="EyeOpenIcon" UriSource="./Buttons/EyeOpenLight.png"/>
+        <BitmapImage x:Key="PauseIcon" UriSource="./Buttons/PauseLight.png"/>
+        <BitmapImage x:Key="PinIcon" UriSource="./Buttons/PinLight.png"/>
+        <BitmapImage x:Key="PlayIcon" UriSource="./Buttons/PlayLight.png"/>
+        <BitmapImage x:Key="SaveIcon" UriSource="./Buttons/SaveLight.png"/>
+        <BitmapImage x:Key="StopIcon" UriSource="./Buttons/StopLight.png"/>
+        <BitmapImage x:Key="UndoIcon" UriSource="./Buttons/UndoLight.png"/>
+        <!-- Button Icons End-->
+        <!-- DragBar Resources -->
+        <GridLength x:Key="DragBarH">20</GridLength>
+        <GridLength x:Key="DragBarButtonW">20</GridLength>
+        <!-- DragBar Resources End -->
+        <!-- Encounter Resources -->
+        <GridLength x:Key="cbxEncounterH">30</GridLength>
+        <GridLength x:Key="btnEncounterH">30</GridLength>
+        <!-- Encounter Resources End-->
+        <!-- Mechanic Resources -->
+        <GridLength x:Key="btnMechanicH">30</GridLength>
+        <GridLength x:Key="MechanicNameH">30</GridLength>
+        <!-- Mechanic Resources End -->
+        <!-- Step Resources -->
+        <GridLength x:Key="imgStepW">64</GridLength>
+        <!-- Step Resources End -->
+        <!-- Edit Mode Resources -->
+        <GridLength x:Key="tbxEncounterH">30</GridLength>
+        <GridLength x:Key="btnEditMechanicH">30</GridLength>
+        <GridLength x:Key="btnEditStepH">30</GridLength>
+        <GridLength x:Key="btnEditW">140</GridLength>
+        <GridLength x:Key="tbxMechanicH">30</GridLength>
+        <GridLength x:Key="btnTimingsW">30</GridLength>
+        <GridLength x:Key="cbxImagesW">Auto</GridLength>
+        <Style x:Key="imgComboImageS" TargetType="Image">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+        </Style>
+        <!-- Edit Mode Resources End-->
+    </Window.Resources>
     <Window.Background>
         <SolidColorBrush Color="Black" Opacity="0.4"/>
     </Window.Background>
     <!-- Main Grid -->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="{Binding Source={StaticResource DragBarH}}"/>
+            <RowDefinition Height="{Binding Source={StaticResource cbxEncounterH}}"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Rectangle Name="DragBar" Fill="Black" MouseLeftButtonDown="DragBar_MouseLeftButtonDown"/>
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="{Binding Source={StaticResource DragBarButtonW}}"/>
+                <ColumnDefinition Width="{Binding Source={StaticResource DragBarButtonW}}"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="1" Click="ExitButton_Click">
-                <Image Source="/Buttons/Cross.png"/>
+            <ToggleButton Grid.Row="0" Grid.Column="1" Margin="2,2,2,2"
+                          Click="PinButton_Click">
+                <Image Source="{Binding Source={StaticResource PinIcon}}"/>
+            </ToggleButton>
+            <Button Grid.Row="0" Grid.Column="2" Margin="2,2,2,2"
+                    Click="ExitButton_Click">
+                <Image Source="{Binding Source={StaticResource CrossIcon}}"/>
             </Button>
         </Grid>
         <!-- Encounter Level Controls -->
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="{Binding Source={StaticResource btnEncounterH}}"/>
+                <ColumnDefinition Width="{Binding Source={StaticResource btnEncounterH}}"/>
+                <ColumnDefinition Width="{Binding Source={StaticResource btnEncounterH}}"/>
             </Grid.ColumnDefinitions>
             <ComboBox x:Name="cbxEncounter"
                       Grid.Row="0" Grid.Column="0"
@@ -43,21 +92,21 @@
                       SelectedItem="{Binding CurrentEncounter}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}"/>
+                        <TextBlock Text="{Binding Name}" Foreground="Black"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <ToggleButton x:Name="tgbEdit"
                           Grid.Row="0" Grid.Column="1" Margin="5,5,5,5">
-                <Image Source="/Buttons/Edit.png"/>
+                <Image Source="{Binding Source={StaticResource EditIcon}}"/>
             </ToggleButton>
             <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
                     Command="{Binding AddEncounterCommand}">
-                <Image Source="/Buttons/Add.png"/>
+                <Image Source="{Binding Source={StaticResource AddIcon}}"/>
             </Button>
             <Button Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
                     Command="{Binding RemoveEncounterCommand}">
-                <Image Source="/Buttons/Delete.png"/>
+                <Image Source="{Binding Source={StaticResource DeleteIcon}}"/>
             </Button>
         </Grid>
         <!-- Encounter Level Controls End -->
@@ -77,44 +126,39 @@
             <ItemsControl ItemsSource="{Binding ElementName=cbxEncounter, Path=SelectedItem.Mechanics}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <DataTemplate.Resources>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="AntiqueWhite"/>
-                            </Style>
-                        </DataTemplate.Resources>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="{Binding Source={StaticResource MechanicNameH}}"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <!-- Mechanics Display Controls -->
                             <Grid Grid.Row="0" Grid.Column="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="{Binding Source={StaticResource btnMechanicH}}"/>
+                                    <ColumnDefinition Width="{Binding Source={StaticResource btnMechanicH}}"/>
+                                    <ColumnDefinition Width="{Binding Source={StaticResource btnMechanicH}}"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
                                            Text="{Binding Name}"/>
                                 <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
                                         Command="{Binding BeginCommand}">
-                                    <Image Source="/Buttons/Play.png"/>
+                                    <Image Source="{Binding Source={StaticResource PlayIcon}}"/>
                                 </Button>
                                 <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
                                         Command="{Binding PauseCommand}">
-                                    <Image Source="/Buttons/Pause.png"/>
+                                    <Image Source="{Binding Source={StaticResource PauseIcon}}"/>
                                 </Button>
                                 <Button Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
                                         Command="{Binding ResetCommand}">
-                                    <Image Source="/Buttons/Undo.png"/>
+                                    <Image Source="{Binding Source={StaticResource UndoIcon}}"/>
                                 </Button>
                             </Grid>
                             <!-- Mechanics Display Controls End -->
                             <!-- Steps Display -->
                             <Grid Grid.Row="1" Grid.Column="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="64"/>
+                                    <ColumnDefinition Width="{Binding Source={StaticResource imgStepW}}"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
@@ -148,48 +192,47 @@
                 </Style>
             </Grid.Style>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="{Binding Source={StaticResource tbxEncounterH}}"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Grid.Column="0" Margin="5,5,5,5">
-                <TextBox Text="{Binding ElementName=cbxEncounter, Path=SelectedItem.Name}"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Row="0" Grid.Column="0"
+                         Text="{Binding ElementName=cbxEncounter, Path=SelectedItem.Name}"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="{Binding Source={StaticResource btnEditMechanicH}}"/>
                 </Grid.RowDefinitions>
                 <!-- Mechanic Level Display -->
                 <ItemsControl Grid.Row="0" Grid.Column="0"
                               ItemsSource="{Binding ElementName=cbxEncounter, Path=SelectedItem.Mechanics}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <DataTemplate.Resources>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="AntiqueWhite"/>
-                                </Style>
-                            </DataTemplate.Resources>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="{Binding Source={StaticResource tbxMechanicH}}"/>
                                     <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="{Binding Source={StaticResource btnEditStepH}}"/>
                                 </Grid.RowDefinitions>
                                 <Grid Grid.Row="0" Grid.Column="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="30"/>
-                                        <ColumnDefinition Width="30"/>
-                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
+                                        <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
+                                        <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
                                          Text="{Binding Name}"/>
                                     <TextBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
-                                         Text="{Binding Start}"/>
+                                         Text="{Binding Start}" ToolTip="Start Time - The number of seconds initially on the timer"/>
                                     <TextBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
-                                         Text="{Binding Frequency}"/>
+                                         Text="{Binding Frequency}" ToolTip="Frequency - The number of seconds between each step"/>
                                     <TextBox Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
-                                         Text="{Binding Delay}"/>
+                                         Text="{Binding Delay}" ToolTip="Delay - The amount the timer will overrun before moving on to the next step"/>
                                 </Grid>
                                 <!-- Step Level Display -->
                                 <ItemsControl ItemsSource="{Binding Steps}" Grid.Row="1" Grid.Column="0">
@@ -202,7 +245,7 @@
                                             </DataTemplate.Resources>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="64"/>
+                                                    <ColumnDefinition Width="{Binding Source={StaticResource cbxImagesW}}"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <ComboBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
@@ -211,7 +254,7 @@
                                                           SelectedValue="{Binding Icon}">
                                                     <ComboBox.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Image Height="32" Width="32" Source="{Binding}"/>
+                                                            <Image Style="{Binding Source={StaticResource imgComboImageS}}" Source="{Binding}"/>
                                                         </DataTemplate>
                                                     </ComboBox.ItemTemplate>
                                                 </ComboBox>
@@ -226,39 +269,38 @@
                                 <!-- Step Level Controls -->
                                 <Grid Grid.Row="2" Grid.Column="0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
                                             Command="{Binding AddStepCommand}">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="30"/>
+                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <Image Grid.Row="0" Grid.Column="0"
                                                    HorizontalAlignment="Left"
-                                                   Source="/Buttons/Add.png"/>
+                                                   Source="{Binding Source={StaticResource AddIcon}}"/>
                                             <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,5,0"
-                                                       HorizontalAlignment="Center"
-                                                       Foreground="Black"
-                                                       Text="Add New Step"/>
+                                                       HorizontalAlignment="Right"
+                                                       Text="New Step"/>
                                         </Grid>
                                     </Button>
                                     <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
                                             Command="{Binding RemoveStepCommand}">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="30"/>
+                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <Image Grid.Row="0" Grid.Column="0"
                                                    HorizontalAlignment="Left"
-                                                   Source="/Buttons/Delete.png"/>
+                                                   Source="{Binding Source={StaticResource DeleteIcon}}"/>
                                             <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,5,0"
-                                                       HorizontalAlignment="Center"
-                                                       Foreground="Black"
-                                                       Text="Remove Last Step"/>
+                                                       HorizontalAlignment="Right"
+                                                       Text="Remove Step"/>
                                         </Grid>
                                     </Button>
                                 </Grid>
@@ -271,7 +313,8 @@
                 <!-- Mechanic Level Controls -->
                 <Grid Grid.Row="1" Grid.Column="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
@@ -279,16 +322,15 @@
                                               Path=SelectedItem.AddMechanicCommand}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Image Grid.Row="0" Grid.Column="0"
-                                                   HorizontalAlignment="Left"
-                                                   Source="/Buttons/Add.png"/>
+                                   HorizontalAlignment="Left"
+                                   Source="{Binding Source={StaticResource AddIcon}}"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,5,0"
-                                                       HorizontalAlignment="Center"
-                                                       Foreground="Black"
-                                                       Text="Add New Mechanic"/>
+                                       HorizontalAlignment="Right"
+                                       Text="New Mechanic"/>
                         </Grid>
                     </Button>
                     <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
@@ -296,16 +338,15 @@
                                               Path=SelectedItem.RemoveMechanicCommand}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Image Grid.Row="0" Grid.Column="0"
                                    HorizontalAlignment="Left"
-                                   Source="/Buttons/Delete.png"/>
+                                   Source="{Binding Source={StaticResource DeleteIcon}}"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,5,0"
-                                       HorizontalAlignment="Center"
-                                       Foreground="Black"
-                                       Text="Remove Last Mechanic"/>
+                                       HorizontalAlignment="Right"
+                                       Text="Remove Mechanic"/>
                         </Grid>
                     </Button>
                 </Grid>

@@ -59,6 +59,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Utilities\ButtonCommand.cs" />
+    <Compile Include="Utilities\Notifier.cs" />
     <Compile Include="Utilities\ObservableDictionary.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -105,18 +106,30 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Buttons\Add.png" />
-    <Resource Include="Buttons\Cross.png" />
-    <Resource Include="Buttons\Edit.png" />
-    <Resource Include="Buttons\EyeClosed.png" />
-    <Resource Include="Buttons\EyeOpen.png" />
-    <Resource Include="Buttons\Pause.png" />
-    <Resource Include="Buttons\Pin.png" />
-    <Resource Include="Buttons\Play.png" />
-    <Resource Include="Buttons\Save.png" />
-    <Resource Include="Buttons\Stop.png" />
-    <Resource Include="Buttons\Undo.png" />
-    <Resource Include="Buttons\Delete.png" />
+    <Resource Include="Buttons\AddDark.png" />
+    <Resource Include="Buttons\AddLight.png" />
+    <Resource Include="Buttons\CrossDark.png" />
+    <Resource Include="Buttons\CrossLight.png" />
+    <Resource Include="Buttons\DeleteDark.png" />
+    <Resource Include="Buttons\DeleteLight.png" />
+    <Resource Include="Buttons\EditDark.png" />
+    <Resource Include="Buttons\EditLight.png" />
+    <Resource Include="Buttons\EyeClosedDark.png" />
+    <Resource Include="Buttons\EyeClosedLight.png" />
+    <Resource Include="Buttons\EyeOpenDark.png" />
+    <Resource Include="Buttons\EyeOpenLight.png" />
+    <Resource Include="Buttons\PauseDark.png" />
+    <Resource Include="Buttons\PauseLight.png" />
+    <Resource Include="Buttons\PinDark.png" />
+    <Resource Include="Buttons\PinLight.png" />
+    <Resource Include="Buttons\PlayDark.png" />
+    <Resource Include="Buttons\PlayLight.png" />
+    <Resource Include="Buttons\SaveDark.png" />
+    <Resource Include="Buttons\SaveLight.png" />
+    <Resource Include="Buttons\StopDark.png" />
+    <Resource Include="Buttons\StopLight.png" />
+    <Resource Include="Buttons\UndoDark.png" />
+    <Resource Include="Buttons\UndoLight.png" />
     <Content Include="Images\Default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

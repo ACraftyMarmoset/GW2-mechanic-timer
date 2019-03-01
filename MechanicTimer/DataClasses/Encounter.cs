@@ -12,7 +12,7 @@ using MechanicTimer.Utilities;
 
 namespace MechanicTimer.DataClasses
 {
-    internal class Encounter : INotifyPropertyChanged, IEquatable<Encounter>
+    internal class Encounter : Notifier, IEquatable<Encounter>
     {
         private string name;
         public string Name
@@ -34,7 +34,7 @@ namespace MechanicTimer.DataClasses
             {
                 if (addMechanicCommand == null)
                 {
-                    addMechanicCommand = new ButtonCommand(param => AddMechanic(new Mechanic()), param => true);
+                    addMechanicCommand = new ButtonCommand(param => AddMechanic(new Mechanic(ResourceCache.DEFAULT_MECHANIC_NAME)), param => true);
                 }
                 return addMechanicCommand;
             }
@@ -55,14 +55,14 @@ namespace MechanicTimer.DataClasses
 
         public Encounter()
         {
-            Name = "Loading...";
-            Mechanics = new ObservableCollection<Mechanic>() { };
+            Name = ResourceCache.LOADING_TEXT;
+            Mechanics = new ObservableCollection<Mechanic>();
         }
 
         public Encounter(string name)
         {
             Name = name;
-            Mechanics = new ObservableCollection<Mechanic>() { new Mechanic() };
+            Mechanics = new ObservableCollection<Mechanic>() { new Mechanic(ResourceCache.DEFAULT_MECHANIC_NAME) };
         }
 
         public Encounter(string name, List<Mechanic> mechanics)
@@ -84,12 +84,6 @@ namespace MechanicTimer.DataClasses
         public bool Equals(Encounter other)
         {
             return Name == other.Name;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

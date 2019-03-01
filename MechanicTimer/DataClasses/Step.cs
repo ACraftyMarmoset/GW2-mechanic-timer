@@ -7,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
+using MechanicTimer.Utilities;
+
 namespace MechanicTimer.DataClasses
 {
-    internal class Step : INotifyPropertyChanged
+    internal class Step : Notifier
     {
         private string description;
         public string Description
@@ -51,12 +53,6 @@ namespace MechanicTimer.DataClasses
         {
             Description = description;
             Icon = icon;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName="")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

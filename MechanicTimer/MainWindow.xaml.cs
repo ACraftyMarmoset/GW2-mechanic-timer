@@ -35,6 +35,11 @@ namespace MechanicTimer
             DragMove();
         }
 
+        private void PinButton_Click(object sender, RoutedEventArgs e)
+        {
+            Topmost = !Topmost;
+        }
+
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             ResourceCache.Instance.SaveEncounters();
