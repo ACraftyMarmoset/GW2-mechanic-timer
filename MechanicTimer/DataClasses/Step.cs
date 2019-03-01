@@ -22,8 +22,8 @@ namespace MechanicTimer.DataClasses
             }
         }
 
-        private string icon;
-        public string Icon
+        private BitmapImage icon;
+        public BitmapImage Icon
         {
             get { return icon; }
             set
@@ -33,9 +33,13 @@ namespace MechanicTimer.DataClasses
             }
         }
 
-        public Step() { }
+        public Step()
+        {
+            Description = "New Step";
+            Icon = ResourceCache.GetIcon("./Images/Default.png");
+        }
 
-        public Step(string description, string icon)
+        public Step(string description, BitmapImage icon)
         {
             Description = description;
             Icon = icon;

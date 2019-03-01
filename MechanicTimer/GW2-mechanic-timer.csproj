@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utilities\ButtonCommand.cs" />
     <Compile Include="Utilities\ObservableDictionary.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -115,15 +116,34 @@
     <Resource Include="Buttons\Save.png" />
     <Resource Include="Buttons\Stop.png" />
     <Resource Include="Buttons\Undo.png" />
-    <Resource Include="Images\Default.png" />
-    <Resource Include="Images\Marker_Arrow.png" />
-    <Resource Include="Images\Marker_Circle.png" />
-    <Resource Include="Images\Marker_Heart.png" />
-    <Resource Include="Images\Marker_Spiral.png" />
-    <Resource Include="Images\Marker_Square.png" />
-    <Resource Include="Images\Marker_Star.png" />
-    <Resource Include="Images\Marker_Triangle.png" />
-    <Resource Include="Images\Marker_X.png" />
+    <Resource Include="Buttons\Delete.png" />
+    <Content Include="Images\Default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Marker_Arrow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Marker_Circle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Marker_Heart.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Marker_Spiral.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Marker_Square.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Marker_Star.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Marker_Triangle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Marker_X.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,47 +7,61 @@
         mc:Ignorable="d"
         Title="MainWindow" WindowStyle="None" AllowsTransparency="True"
         Height="400" Width="300" ResizeMode="CanResizeWithGrip">
-    <Window.Resources>
-        <Style TargetType="Image">
-            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
-        </Style>
-    </Window.Resources>
     <Window.Background>
         <SolidColorBrush Color="Black" Opacity="0.4"/>
     </Window.Background>
+    <!-- Main Grid -->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Rectangle Name="DragBar" Fill="Black" MouseLeftButtonDown="DragBar_MouseLeftButtonDown"/>
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
             </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="1" Click="ExitButton_Click">
+                <Image Source="/Buttons/Cross.png"/>
+            </Button>
         </Grid>
+        <!-- Encounter Level Controls -->
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
             <ComboBox x:Name="cbxEncounter"
                       Grid.Row="0" Grid.Column="0"
                       Margin="5,5,5,5"
-                      ItemsSource="{Binding Encounters}">
+                      ItemsSource="{Binding Encounters}"
+                      SelectedItem="{Binding CurrentEncounter}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Key}"/>
+                        <TextBlock Text="{Binding Name}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <ToggleButton x:Name="tgbEdit"
-                          Grid.Row="0" Grid.Column="1"
-                          Margin="5,5,5,5">
+                          Grid.Row="0" Grid.Column="1" Margin="5,5,5,5">
                 <Image Source="/Buttons/Edit.png"/>
             </ToggleButton>
+            <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
+                    Command="{Binding AddEncounterCommand}">
+                <Image Source="/Buttons/Add.png"/>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
+                    Command="{Binding RemoveEncounterCommand}">
+                <Image Source="/Buttons/Delete.png"/>
+            </Button>
         </Grid>
+        <!-- Encounter Level Controls End -->
+        <!-- Main Encounter View -->
         <Grid Grid.Row="2" Grid.Column="0">
             <Grid.Style>
                 <Style TargetType="Grid">
@@ -59,7 +73,8 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <ItemsControl ItemsSource="{Binding ElementName=cbxEncounter, Path=SelectedItem.Value.Mechanics}">
+            <!-- Mechanics Display -->
+            <ItemsControl ItemsSource="{Binding ElementName=cbxEncounter, Path=SelectedItem.Mechanics}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <DataTemplate.Resources>
@@ -72,6 +87,7 @@
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
+                            <!-- Mechanics Display Controls -->
                             <Grid Grid.Row="0" Grid.Column="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -94,6 +110,7 @@
                                     <Image Source="/Buttons/Undo.png"/>
                                 </Button>
                             </Grid>
+                            <!-- Mechanics Display Controls End -->
                             <Grid Grid.Row="1" Grid.Column="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="64"/>
@@ -113,7 +130,10 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+            <!-- Mechanics Display End -->
         </Grid>
+        <!-- Main Encounter View End -->
+        <!-- Encounter Editing Interface -->
         <Grid Grid.Row="2" Grid.Column="0">
             <Grid.Style>
                 <Style TargetType="Grid">
@@ -125,71 +145,172 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <ItemsControl ItemsSource="{Binding ElementName=cbxEncounter, Path=SelectedItem.Value.Mechanics}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <DataTemplate.Resources>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="AntiqueWhite"/>
-                            </Style>
-                        </DataTemplate.Resources>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="30"/>
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="0" Grid.Column="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="30"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0" Margin="5,5,5,5">
+                <TextBox Text="{Binding ElementName=cbxEncounter, Path=SelectedItem.Name}"/>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <!-- Mechanic Level Display -->
+                <ItemsControl Grid.Row="0" Grid.Column="0"
+                              ItemsSource="{Binding ElementName=cbxEncounter, Path=SelectedItem.Mechanics}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DataTemplate.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="AntiqueWhite"/>
+                                </Style>
+                            </DataTemplate.Resources>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="30"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
                                          Text="{Binding Name}"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
+                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
                                          Text="{Binding Start}"/>
-                                <TextBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
+                                    <TextBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
                                          Text="{Binding Frequency}"/>
-                                <TextBox Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
+                                    <TextBox Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
                                          Text="{Binding Delay}"/>
-                            </Grid>
-                            <ItemsControl ItemsSource="{Binding Steps}" Grid.Row="1" Grid.Column="0">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <DataTemplate.Resources>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="AntiqueWhite"/>
-                                            </Style>
-                                        </DataTemplate.Resources>
+                                </Grid>
+                                <!-- Step Level Display -->
+                                <ItemsControl ItemsSource="{Binding Steps}" Grid.Row="1" Grid.Column="0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <DataTemplate.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="AntiqueWhite"/>
+                                                </Style>
+                                            </DataTemplate.Resources>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="64"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ComboBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+                                                          ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}},
+                                                                                Path=DataContext.Icons.Values}"
+                                                          SelectedItem="{Binding Icon}">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Image Height="32" Width="32" Source="{Binding}"/>
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+                                                <TextBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
+                                                         Height="Auto" VerticalAlignment="Center"
+                                                         Text="{Binding Description}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <!-- Step Level Display End -->
+                                <!-- Step Level Controls -->
+                                <Grid Grid.Row="2" Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+                                            Command="{Binding AddStepCommand}">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="64"/>
+                                                <ColumnDefinition Width="30"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Image Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
-                                                   Source="{Binding Icon}"/>
-                                            <TextBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
-                                                     Text="{Binding Description}"/>
+                                            <Image Grid.Row="0" Grid.Column="0"
+                                                   HorizontalAlignment="Left"
+                                                   Source="/Buttons/Add.png"/>
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,5,0"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="Black"
+                                                       Text="Add New Step"/>
                                         </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <Grid Grid.Row="2" Grid.Column="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
-                                        Command="{Binding AddStepCommand}">
-                                    <Image Source="/Buttons/Add.png"/>
-                                </Button>
+                                    </Button>
+                                    <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
+                                            Command="{Binding RemoveStepCommand}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Row="0" Grid.Column="0"
+                                                   HorizontalAlignment="Left"
+                                                   Source="/Buttons/Delete.png"/>
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,5,0"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="Black"
+                                                       Text="Remove Last Step"/>
+                                        </Grid>
+                                    </Button>
+                                </Grid>
+                                <!-- Step Level Controls End -->
                             </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- Mechanic Level Display End -->
+                <!-- Mechanic Level Controls -->
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+                            Command="{Binding ElementName=cbxEncounter, 
+                                              Path=SelectedItem.AddMechanicCommand}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0" Grid.Column="0"
+                                                   HorizontalAlignment="Left"
+                                                   Source="/Buttons/Add.png"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,5,0"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="Black"
+                                                       Text="Add New Mechanic"/>
                         </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                    </Button>
+                    <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
+                            Command="{Binding ElementName=cbxEncounter,
+                                              Path=SelectedItem.RemoveMechanicCommand}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0" Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   Source="/Buttons/Delete.png"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,5,0"
+                                       HorizontalAlignment="Center"
+                                       Foreground="Black"
+                                       Text="Remove Last Mechanic"/>
+                        </Grid>
+                    </Button>
+                </Grid>
+                <!-- Mechanic Level Controls End -->
+            </Grid>
         </Grid>
+        <!-- Encounter Editing Interface End -->
     </Grid>
+    <!-- Main Grid End -->
 </Window>

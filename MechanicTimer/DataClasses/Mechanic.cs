@@ -10,6 +10,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
+using MechanicTimer.Utilities;
+
 namespace MechanicTimer.DataClasses
 {
 
@@ -163,9 +165,35 @@ namespace MechanicTimer.DataClasses
             }
         }
 
+        private ICommand removeStepCommand;
+        public ICommand RemoveStepCommand
+        {
+            get
+            {
+                if (removeStepCommand == null)
+                {
+                    removeStepCommand = new ButtonCommand(param => RemoveStep(), param => Steps.Count > 1);
+                }
+                return removeStepCommand;
+            }
+        }
+
         private DispatcherTimer Timer { get; } = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 1) };
 
-        public Mechanic() { }
+        public Mechanic()
+        {
+            Name = "New Mechanic";
+            Start = 30;
+            Frequency = 30;
+            Delay = 5;
+            Autostart = true;
+            Autohide = false;
+            Steps = new ObservableCollection<Step>() { new Step() };
+
+            Index = 0;
+            CurrentTime = Start;
+            Timer.Tick += Timer_Tick;
+        }
 
         public Mechanic(string name, int start, int frequency, int delay, bool autostart, bool autohide, List<Step> steps)
         {
@@ -201,7 +229,12 @@ namespace MechanicTimer.DataClasses
 
         public void AddStep()
         {
-            Steps.Add(new Step("New Step", "/Images/Default.png"));
+            Steps.Add(new Step());
+        }
+
+        public void RemoveStep()
+        {
+            Steps.RemoveAt(Steps.Count - 1);
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -218,43 +251,6 @@ namespace MechanicTimer.DataClasses
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private class ButtonCommand : ICommand
-        {
-            private readonly Action<object> execute;
-            public void Execute(object param)
-            {
-                execute(param);
-            }
-
-            private readonly Predicate<object> canExecute;
-            public bool CanExecute(object param)
-            {
-                if (canExecute != null)
-                {
-                    return canExecute(param);
-                }
-                return true;
-            }
-            
-            public ButtonCommand(Action<object> action, Predicate<object> predicate)
-            {
-                execute = action;
-                canExecute = predicate;
-            }
-
-            public event EventHandler CanExecuteChanged
-            {
-                add
-                {
-                    CommandManager.RequerySuggested += value;
-                }
-                remove
-                {
-                    CommandManager.RequerySuggested -= value;
-                }
-            }
         }
     }
 }
