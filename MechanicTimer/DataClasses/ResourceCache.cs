@@ -97,7 +97,7 @@ namespace MechanicTimer.DataClasses
 
         public void AddEncounter()
         {
-            Instance.Encounters.Add(new Encounter(DEFAULT_ENCOUNTER_NAME);
+            Instance.Encounters.Add(new Encounter(DEFAULT_ENCOUNTER_NAME));
         }
 
         public void RemoveEncounter()
