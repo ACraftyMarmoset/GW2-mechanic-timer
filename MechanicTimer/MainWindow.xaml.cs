@@ -13,7 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Newtonsoft.Json;
+
 using MechanicTimer.DataClasses;
+using System.Collections.ObjectModel;
+using System.IO;
 
 namespace MechanicTimer
 {
@@ -23,9 +27,6 @@ namespace MechanicTimer
         {
             InitializeComponent();
             DataContext = ResourceCache.Instance;
-            Console.WriteLine(ResourceCache.Instance.Encounters);
-
-            Console.WriteLine(ResourceCache.Instance);
         }
 
         private void DragBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

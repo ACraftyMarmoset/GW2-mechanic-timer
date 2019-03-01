@@ -111,6 +111,7 @@
                                 </Button>
                             </Grid>
                             <!-- Mechanics Display Controls End -->
+                            <!-- Steps Display -->
                             <Grid Grid.Row="1" Grid.Column="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="64"/>
@@ -126,6 +127,7 @@
                                            VerticalAlignment="Center" HorizontalAlignment="Right"
                                            Text="{Binding CurrentTime}"/>
                             </Grid>
+                            <!-- Steps Display End -->
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -205,8 +207,8 @@
                                                 </Grid.ColumnDefinitions>
                                                 <ComboBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
                                                           ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}},
-                                                                                Path=DataContext.Icons.Values}"
-                                                          SelectedItem="{Binding Icon}">
+                                                                                Path=DataContext.Icons.Keys}"
+                                                          SelectedValue="{Binding Icon}">
                                                     <ComboBox.ItemTemplate>
                                                         <DataTemplate>
                                                             <Image Height="32" Width="32" Source="{Binding}"/>

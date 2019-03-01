@@ -85,17 +85,6 @@ namespace MechanicTimer.DataClasses
             }
         }
 
-        private int index;
-        public int Index
-        {
-            get { return index; }
-            set
-            {
-                index = value;
-                NotifyPropertyChanged();
-                NotifyPropertyChanged("CurrentStep");
-            }
-        }
 
         private int currentTime;
         public int CurrentTime
@@ -108,9 +97,24 @@ namespace MechanicTimer.DataClasses
             }
         }
 
+        private int index;
+        public int Index
+        {
+            get { return index; }
+            set
+            {
+                index = value;
+                NotifyPropertyChanged();
+                NotifyPropertyChanged("CurrentStep");
+            }
+        }
+
         public Step CurrentStep
         {
-            get { return Steps[Index]; }
+            get
+            {
+                return Steps?[Index];
+            }
         }
 
         private ICommand beginCommand;
@@ -172,7 +176,7 @@ namespace MechanicTimer.DataClasses
             {
                 if (removeStepCommand == null)
                 {
-                    removeStepCommand = new ButtonCommand(param => RemoveStep(), param => Steps.Count > 1);
+                    removeStepCommand = new ButtonCommand(param => RemoveStep(), param => Steps.Count > 0);
                 }
                 return removeStepCommand;
             }
@@ -182,7 +186,7 @@ namespace MechanicTimer.DataClasses
 
         public Mechanic()
         {
-            Name = "New Mechanic";
+            Name = ResourceCache.DEFAULT_MECHANIC_NAME;
             Start = 30;
             Frequency = 30;
             Delay = 5;

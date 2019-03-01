@@ -19,15 +19,14 @@ namespace MechanicTimer.DataClasses
     internal class ResourceCache
     {
         private const string CONFIG_FILEPATH = "./config.json";
+        private const string IMAGE_FOLDER = "./Images/";
 
-        private static readonly ResourceCache instance = new ResourceCache();
-        public static ResourceCache Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public const string DEFAULT_ICON = IMAGE_FOLDER + "Default.png";
+        public const string DEFAULT_ENCOUNTER_NAME = "New Encounter";
+        public const string DEFAULT_MECHANIC_NAME = "New Mechanic";
+        public const string DEFAULT_STEP_NAME = "New Step";
+
+        public static ResourceCache Instance { get; } = new ResourceCache();
 
         public ObservableCollection<Encounter> Encounters { get; set; }
         public ObservableDictionary<string, BitmapImage> Icons { get; set; }
@@ -67,7 +66,9 @@ namespace MechanicTimer.DataClasses
 
         private ResourceCache()
         {
-            Console.WriteLine("Constructor running");
+            Encounters = new ObservableCollection<Encounter>();
+            Icons = new ObservableDictionary<string, BitmapImage>();
+
             LoadEncounters();
             LoadImages();
         }
@@ -80,8 +81,7 @@ namespace MechanicTimer.DataClasses
             }
             else
             {
-                Instance.Icons.Add(path, new BitmapImage(new Uri(path, UriKind.Relative)));
-                return Instance.Icons[path];
+                return Instance.Icons[DEFAULT_ICON];
             }
         }
 
@@ -89,7 +89,7 @@ namespace MechanicTimer.DataClasses
         {
             Icons = new ObservableDictionary<string, BitmapImage>();
 
-            foreach (var file in Directory.GetFiles("./Images/", "*.png"))
+            foreach (var file in Directory.GetFiles(IMAGE_FOLDER, "*.png"))
             {
                 Icons.Add(file, new BitmapImage(new Uri(file, UriKind.Relative)));
             }
@@ -97,7 +97,7 @@ namespace MechanicTimer.DataClasses
 
         public void AddEncounter()
         {
-            Instance.Encounters.Add(new Encounter($"New Encounter"));
+            Instance.Encounters.Add(new Encounter(DEFAULT_ENCOUNTER_NAME);
         }
 
         public void RemoveEncounter()
@@ -127,7 +127,6 @@ namespace MechanicTimer.DataClasses
         {
             if (File.Exists(CONFIG_FILEPATH))
             {
-                Console.WriteLine("Found File");
                 var data = JsonConvert.DeserializeObject<ObservableCollection<Encounter>>(File.ReadAllText(CONFIG_FILEPATH));
                 Encounters =  data ?? new ObservableCollection<Encounter>();
             }

@@ -47,7 +47,7 @@ namespace MechanicTimer.DataClasses
             {
                 if (removeMechanicCommand == null)
                 {
-                    removeMechanicCommand = new ButtonCommand(param => RemoveMechanic(), param => Mechanics.Count > 1);
+                    removeMechanicCommand = new ButtonCommand(param => RemoveMechanic(), param => Mechanics.Count > 0);
                 }
                 return removeMechanicCommand;
             }
@@ -55,8 +55,8 @@ namespace MechanicTimer.DataClasses
 
         public Encounter()
         {
-            Name = "New Encounter";
-            Mechanics = new ObservableCollection<Mechanic>() { new Mechanic() };
+            Name = "Loading...";
+            Mechanics = new ObservableCollection<Mechanic>() { };
         }
 
         public Encounter(string name)
