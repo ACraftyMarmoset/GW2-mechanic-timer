@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:MechanicTimer"
         mc:Ignorable="d"
         Title="MainWindow" WindowStyle="None" AllowsTransparency="True"
-        Height="400" Width="300" ResizeMode="CanResizeWithGrip">
+        ResizeMode="CanResizeWithGrip" MinHeight="200" MinWidth="300"
+        Height="400" Width="300">
     <Window.Resources>
         <!-- Button Icons -->
         <BitmapImage x:Key="AddIcon" UriSource="./Buttons/AddLight.png"/>
@@ -122,8 +123,34 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{Binding Source={StaticResource btnEncounterH}}"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!-- Timer Controls -->
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+                        Click="PlayAllButton_Click">
+                    <Image Source="{Binding Source={StaticResource PlayIcon}}"/>
+                </Button>
+                <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
+                        Click="PauseAllButton_Click">
+                    <Image Source="{Binding Source={StaticResource PauseIcon}}"/>
+                </Button>
+                <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
+                        Click="ResetAllButton_Click">
+                    <Image Source="{Binding Source={StaticResource UndoIcon}}"/>
+                </Button>
+            </Grid>
+            <!-- Timer Controls End -->
             <!-- Mechanics Display -->
-            <ItemsControl ItemsSource="{Binding ElementName=cbxEncounter, Path=SelectedItem.Mechanics}">
+            <ItemsControl Grid.Row="1" Grid.Column="0"
+                          ItemsSource="{Binding ElementName=cbxEncounter, Path=SelectedItem.Mechanics}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -224,15 +251,22 @@
                                         <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
                                         <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
                                         <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
+                                        <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
                                          Text="{Binding Name}"/>
                                     <TextBox Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
-                                         Text="{Binding Start}" ToolTip="Start Time - The number of seconds initially on the timer"/>
+                                             VerticalAlignment="Center"
+                                             Text="{Binding Start}" ToolTip="Start Time - The number of seconds initially on the timer"/>
                                     <TextBox Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
-                                         Text="{Binding Frequency}" ToolTip="Frequency - The number of seconds between each step"/>
+                                             VerticalAlignment="Center"
+                                             Text="{Binding Frequency}" ToolTip="Frequency - The number of seconds between each step"/>
                                     <TextBox Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
-                                         Text="{Binding Delay}" ToolTip="Delay - The amount the timer will overrun before moving on to the next step"/>
+                                             VerticalAlignment="Center"
+                                             Text="{Binding Delay}" ToolTip="Delay - The amount the timer will overrun before moving on to the next step"/>
+                                    <CheckBox Grid.Row="0" Grid.Column="4" Margin="5,5,5,5"
+                                              VerticalAlignment="Center"
+                                              IsChecked="{Binding Autostart}" ToolTip="Autostart - Whether the timer will be started with the global play button"/>
                                 </Grid>
                                 <!-- Step Level Display -->
                                 <ItemsControl ItemsSource="{Binding Steps}" Grid.Row="1" Grid.Column="0">

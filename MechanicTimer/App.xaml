@@ -29,7 +29,7 @@
         <Style TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
-                    <SolidColorBrush Color="Black" Opacity="0.4"/>
+                    <SolidColorBrush Color="Transparent"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
@@ -45,7 +45,7 @@
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="DarkGray" Opacity="0.4"/>
+                            <SolidColorBrush Color="Gray" Opacity="0.4"/>
                         </Setter.Value>
                     </Setter>
                 </Trigger>
@@ -54,7 +54,7 @@
         <Style TargetType="ToggleButton">
             <Setter Property="Background">
                 <Setter.Value>
-                    <SolidColorBrush Color="Black" Opacity="0.4"/>
+                    <SolidColorBrush Color="Transparent"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
@@ -70,14 +70,14 @@
                 <Trigger Property="IsChecked" Value="True">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="Gray" Opacity="0.4"/>
+                            <SolidColorBrush Color="DarkGray" Opacity="0.4"/>
                         </Setter.Value>
                     </Setter>
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="DarkGray" Opacity="0.4"/>
+                            <SolidColorBrush Color="Gray" Opacity="0.4"/>
                         </Setter.Value>
                     </Setter>
                 </Trigger>
