@@ -46,6 +46,14 @@ namespace MechanicTimer
             Close();
         }
 
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var mechanic in ResourceCache.Instance.CurrentEncounter?.Mechanics)
+            {
+                mechanic.Reset();
+            }
+        }
+
         private void PlayAllButton_Click(object sender, RoutedEventArgs e)
         {
             if (ResourceCache.Instance.CurrentEncounter != null)

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 using MechanicTimer.Utilities;
@@ -104,6 +105,28 @@ namespace MechanicTimer.DataClasses
             set
             {
                 currentTime = value;
+
+                TimerColour = ResourceCache.TIMER_DEFAULT;
+                if (currentTime <= ResourceCache.AMBER_THRESHOLD)
+                {
+                    TimerColour = ResourceCache.TIMER_AMBER;
+                }
+                if (currentTime <= ResourceCache.RED_THRESHOLD)
+                {
+                    TimerColour = ResourceCache.TIMER_RED;
+                }
+
+                NotifyPropertyChanged();
+            }
+        }
+
+        public Color timerColour;
+        public Color TimerColour
+        {
+            get { return timerColour; }
+            set
+            {
+                timerColour = value;
                 NotifyPropertyChanged();
             }
         }
@@ -187,7 +210,7 @@ namespace MechanicTimer.DataClasses
             {
                 if (removeStepCommand == null)
                 {
-                    removeStepCommand = new ButtonCommand(param => RemoveStep(), param => Steps.Count > 0);
+                    removeStepCommand = new ButtonCommand(param => RemoveStep(), param => Steps.Count > 1);
                 }
                 return removeStepCommand;
             }
@@ -208,6 +231,7 @@ namespace MechanicTimer.DataClasses
 
             Index = 0;
             CurrentTime = Start;
+            TimerColour = ResourceCache.TIMER_DEFAULT;
             Timer.Tick += Timer_Tick;
         }
 
@@ -224,6 +248,7 @@ namespace MechanicTimer.DataClasses
 
             Index = 0;
             CurrentTime = Start;
+            TimerColour = ResourceCache.TIMER_DEFAULT;
             Timer.Tick += Timer_Tick;
         }
 
@@ -240,6 +265,7 @@ namespace MechanicTimer.DataClasses
 
             Index = 0;
             CurrentTime = Start;
+            TimerColour = ResourceCache.TIMER_DEFAULT;
             Timer.Tick += Timer_Tick;
         }
 
@@ -273,6 +299,7 @@ namespace MechanicTimer.DataClasses
         private void Timer_Tick(object sender, EventArgs e)
         {
             CurrentTime -= 1;
+
             if (CurrentTime < -Delay)
             {
                 Index = (Index + 1) % Steps.Count();

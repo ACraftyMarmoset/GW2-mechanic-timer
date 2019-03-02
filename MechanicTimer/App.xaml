@@ -6,6 +6,8 @@
     <Application.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="AntiqueWhite"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontSize" Value="16"/>
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Foreground" Value="AntiqueWhite"/>
@@ -14,6 +16,8 @@
                     <SolidColorBrush Color="Black" Opacity="0.4"/>
                 </Setter.Value>
             </Setter>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontSize" Value="16"/>
         </Style>
         <Style TargetType="ToolTip">
             <Setter Property="Foreground" Value="Black"/>
@@ -46,6 +50,13 @@
                     <Setter Property="Background">
                         <Setter.Value>
                             <SolidColorBrush Color="Gray" Opacity="0.4"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsEnabled"  Value="False">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="DarkGray" Opacity="0.4"/>
                         </Setter.Value>
                     </Setter>
                 </Trigger>

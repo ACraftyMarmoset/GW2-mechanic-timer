@@ -13,10 +13,11 @@ using Newtonsoft.Json;
 
 using MechanicTimer.Utilities;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace MechanicTimer.DataClasses
 {
-    internal class ResourceCache
+    internal class ResourceCache : Notifier
     {
         private const string CONFIG_FILEPATH = "./config.json";
         private const string IMAGE_FOLDER = "./Images/";
@@ -27,12 +28,34 @@ namespace MechanicTimer.DataClasses
         public const string DEFAULT_MECHANIC_NAME = "New Mechanic";
         public const string DEFAULT_STEP_NAME = "New Step";
 
+        public const int AMBER_THRESHOLD = 10;
+        public const int RED_THRESHOLD = 5;
+        public static Color TIMER_DEFAULT = Colors.AntiqueWhite;
+        public static Color TIMER_AMBER = Colors.Gold;
+        public static Color TIMER_RED = Colors.OrangeRed;
+
         public static ResourceCache Instance { get; } = new ResourceCache();
 
         public ObservableCollection<Encounter> Encounters { get; set; }
         public ObservableDictionary<string, BitmapImage> Icons { get; set; }
 
-        public Encounter CurrentEncounter { get; set; }
+        private Encounter currentEncounter;
+        public Encounter CurrentEncounter
+        {
+            get { return currentEncounter; }
+            set
+            {
+                currentEncounter = value;
+                if (currentEncounter != null)
+                {
+                    foreach (var mechanic in currentEncounter.Mechanics)
+                    {
+                        mechanic.Reset();
+                    }
+                }
+                NotifyPropertyChanged();
+            }
+        }
 
         private ICommand addEncounterCommand;
         public ICommand AddEncounterCommand
@@ -54,7 +77,7 @@ namespace MechanicTimer.DataClasses
             {
                 if (removeEncounterCommand == null)
                 {
-                    removeEncounterCommand = new ButtonCommand(param => RemoveEncounter(), param => true);
+                    removeEncounterCommand = new ButtonCommand(param => RemoveEncounter(), param => Encounters.Count > 1);
                 }
                 return removeEncounterCommand;
             }
@@ -67,11 +90,10 @@ namespace MechanicTimer.DataClasses
 
         private ResourceCache()
         {
-            Encounters = new ObservableCollection<Encounter>();
-            Icons = new ObservableDictionary<string, BitmapImage>();
-
             LoadEncounters();
             LoadImages();
+
+            CurrentEncounter = Encounters.Count > 0 ? Encounters[0] : null;
         }
 
         public static BitmapImage GetIcon(string path)
@@ -104,6 +126,7 @@ namespace MechanicTimer.DataClasses
         public void RemoveEncounter()
         {
             Instance.Encounters.Remove(Instance.CurrentEncounter);
+            Instance.CurrentEncounter = Instance.Encounters.Count > 0 ? Instance.Encounters[0] : null;
         }
 
         public Encounter GetEncounter(string name)
@@ -129,12 +152,12 @@ namespace MechanicTimer.DataClasses
             if (File.Exists(CONFIG_FILEPATH))
             {
                 var data = JsonConvert.DeserializeObject<ObservableCollection<Encounter>>(File.ReadAllText(CONFIG_FILEPATH));
-                Encounters =  data ?? new ObservableCollection<Encounter>();
+                Encounters =  data ?? new ObservableCollection<Encounter>() { new Encounter() };
             }
             else
             {
                 File.Create(CONFIG_FILEPATH);
-                Encounters = new ObservableCollection<Encounter>();
+                Encounters = new ObservableCollection<Encounter>() { new Encounter() };
             }
         }
     }
