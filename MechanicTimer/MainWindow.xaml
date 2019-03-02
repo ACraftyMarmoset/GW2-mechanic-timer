@@ -158,11 +158,13 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="{Binding Source={StaticResource MechanicNameH}}"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
+                                    <Separator Grid.Row="0" Grid.Column="0"/>
                                     <!-- Mechanics Display Controls -->
-                                    <Grid Grid.Row="0" Grid.Column="0">
+                                    <Grid Grid.Row="1" Grid.Column="0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="{Binding Source={StaticResource btnMechanicH}}"/>
@@ -203,7 +205,7 @@
                                     </Grid>
                                     <!-- Mechanics Display Controls End -->
                                     <!-- Steps Display -->
-                                    <Grid Grid.Row="1" Grid.Column="0">
+                                    <Grid Grid.Row="2" Grid.Column="0">
                                         <Grid.Style>
                                             <Style TargetType="Grid">
                                                 <Setter Property="Visibility" Value="Visible"/>
@@ -276,17 +278,18 @@
                                 <DataTemplate>
                                     <Grid>
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="{Binding Source={StaticResource tbxMechanicH}}"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="{Binding Source={StaticResource btnEditStepH}}"/>
                                         </Grid.RowDefinitions>
-                                        <Grid Grid.Row="0" Grid.Column="0">
+                                        <Separator Grid.Row="0" Grid.Column="0"/>
+                                        <Grid Grid.Row="1" Grid.Column="0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
                                                 <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
                                                 <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
-                                                <ColumnDefinition Width="{Binding Source={StaticResource chbTimingsW}}"/>
                                                 <ColumnDefinition Width="{Binding Source={StaticResource chbTimingsW}}"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
@@ -304,12 +307,9 @@
                                             <CheckBox Grid.Row="0" Grid.Column="4" Margin="5,5,5,5"
                                               VerticalAlignment="Center"
                                               IsChecked="{Binding Autostart}" ToolTip="Autostart - Whether the timer will be started with the global play button"/>
-                                            <CheckBox Grid.Row="0" Grid.Column="5" Margin="5,5,5,5"
-                                              VerticalAlignment="Center"
-                                              IsChecked="{Binding Autohide}" ToolTip="Autohide - Whether the mechanic will be hidden by default"/>
                                         </Grid>
                                         <!-- Step Level Display -->
-                                        <ItemsControl ItemsSource="{Binding Steps}" Grid.Row="1" Grid.Column="0">
+                                        <ItemsControl ItemsSource="{Binding Steps}" Grid.Row="2" Grid.Column="0">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <DataTemplate.Resources>
@@ -342,7 +342,7 @@
                                         </ItemsControl>
                                         <!-- Step Level Display End -->
                                         <!-- Step Level Controls -->
-                                        <Grid Grid.Row="2" Grid.Column="0">
+                                        <Grid Grid.Row="3" Grid.Column="0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>

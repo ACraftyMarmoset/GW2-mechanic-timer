@@ -106,6 +106,24 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\AoE_Coloured_Blue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\AoE_Coloured_Green.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\AoE_Coloured_Orange.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Icon_Defiance.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Icon_Knockback.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Icon_Superspeed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Buttons\AddDark.png" />
     <Resource Include="Buttons\AddLight.png" />
     <Resource Include="Buttons\CrossDark.png" />
@@ -130,7 +148,10 @@
     <Resource Include="Buttons\StopLight.png" />
     <Resource Include="Buttons\UndoDark.png" />
     <Resource Include="Buttons\UndoLight.png" />
-    <Content Include="Images\Default.png">
+    <Content Include="Images\AoE_Fancy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\zDefault.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Marker_Arrow.png">

@@ -75,18 +75,6 @@ namespace MechanicTimer.DataClasses
             }
         }
 
-        private bool autohide;
-        public bool Autohide
-        {
-            get { return autohide; }
-            set
-            {
-                autohide = value;
-                Visible = !value;
-                NotifyPropertyChanged();
-            }
-        }
-
         private bool visible;
         public bool Visible
         {
@@ -225,8 +213,7 @@ namespace MechanicTimer.DataClasses
             Frequency = 30;
             Delay = 5;
             Autostart = true;
-            Autohide = false;
-            Visible = !Autohide;
+            Visible = true;
             Steps = new ObservableCollection<Step>();
 
             Index = 0;
@@ -242,8 +229,7 @@ namespace MechanicTimer.DataClasses
             Frequency = 30;
             Delay = 5;
             Autostart = true;
-            Autohide = false;
-            Visible = !Autohide;
+            Visible = true;
             Steps = new ObservableCollection<Step>() { new Step() };
 
             Index = 0;
@@ -252,15 +238,14 @@ namespace MechanicTimer.DataClasses
             Timer.Tick += Timer_Tick;
         }
 
-        public Mechanic(string name, int start, int frequency, int delay, bool autostart, bool autohide, List<Step> steps)
+        public Mechanic(string name, int start, int frequency, int delay, bool autostart, bool visible, List<Step> steps)
         {
             Name = name;
             Start = start;
             Frequency = frequency;
             Delay = delay;
             Autostart = autostart;
-            Autohide = autohide;
-            Visible = !Autohide;
+            Visible = visible;
             Steps = new ObservableCollection<Step>(steps);
 
             Index = 0;

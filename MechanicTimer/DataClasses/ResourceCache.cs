@@ -23,7 +23,7 @@ namespace MechanicTimer.DataClasses
         private const string IMAGE_FOLDER = "./Images/";
 
         public const string LOADING_TEXT = "Loading...";
-        public const string DEFAULT_ICON = IMAGE_FOLDER + "Default.png";
+        public const string DEFAULT_ICON = IMAGE_FOLDER + "zDefault.png";
         public const string DEFAULT_ENCOUNTER_NAME = "New Encounter";
         public const string DEFAULT_MECHANIC_NAME = "New Mechanic";
         public const string DEFAULT_STEP_NAME = "New Step";
