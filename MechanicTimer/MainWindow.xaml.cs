@@ -48,28 +48,37 @@ namespace MechanicTimer
 
         private void PlayAllButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var mechanic in ResourceCache.Instance.CurrentEncounter.Mechanics)
+            if (ResourceCache.Instance.CurrentEncounter != null)
             {
-                if (mechanic.Autostart)
+                foreach (var mechanic in ResourceCache.Instance.CurrentEncounter.Mechanics)
                 {
-                    mechanic.Begin();
+                    if (mechanic.Autostart)
+                    {
+                        mechanic.Begin();
+                    }
                 }
             }
         }
 
         private void PauseAllButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var mechanic in ResourceCache.Instance.CurrentEncounter.Mechanics)
+            if (ResourceCache.Instance.CurrentEncounter != null)
             {
-                mechanic.Pause();
+                foreach (var mechanic in ResourceCache.Instance.CurrentEncounter?.Mechanics)
+                {
+                    mechanic.Pause();
+                }
             }
         }
 
         private void ResetAllButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var mechanic in ResourceCache.Instance.CurrentEncounter.Mechanics)
+            if (ResourceCache.Instance.CurrentEncounter != null)
             {
-                mechanic.Reset();
+                foreach (var mechanic in ResourceCache.Instance.CurrentEncounter?.Mechanics)
+                {
+                    mechanic.Reset();
+                }
             }
         }
     }

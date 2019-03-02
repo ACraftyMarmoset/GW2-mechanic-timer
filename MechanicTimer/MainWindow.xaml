@@ -165,6 +165,7 @@
                                     <ColumnDefinition Width="{Binding Source={StaticResource btnMechanicH}}"/>
                                     <ColumnDefinition Width="{Binding Source={StaticResource btnMechanicH}}"/>
                                     <ColumnDefinition Width="{Binding Source={StaticResource btnMechanicH}}"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
                                            Text="{Binding Name}"/>
@@ -180,10 +181,35 @@
                                         Command="{Binding ResetCommand}">
                                     <Image Source="{Binding Source={StaticResource UndoIcon}}"/>
                                 </Button>
+                                <ToggleButton Grid.Row="0" Grid.Column="4" Margin="5,5,5,5"
+                                              IsChecked="{Binding Visible}">
+                                    <Image>
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source" Value="{Binding Source={StaticResource EyeOpenIcon}}"/>
+                                                <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Visible}" Value="False">
+                                                        <Setter Property="Source" Value="{Binding Source={StaticResource EyeClosedIcon}}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </ToggleButton>
                             </Grid>
                             <!-- Mechanics Display Controls End -->
                             <!-- Steps Display -->
                             <Grid Grid.Row="1" Grid.Column="0">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Visible}" Value="False">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="{Binding Source={StaticResource imgStepW}}"/>
                                     <ColumnDefinition Width="*"/>
@@ -252,6 +278,7 @@
                                         <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
                                         <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
                                         <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
+                                        <ColumnDefinition Width="{Binding Source={StaticResource btnTimingsW}}"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
                                          Text="{Binding Name}"/>
@@ -267,6 +294,9 @@
                                     <CheckBox Grid.Row="0" Grid.Column="4" Margin="5,5,5,5"
                                               VerticalAlignment="Center"
                                               IsChecked="{Binding Autostart}" ToolTip="Autostart - Whether the timer will be started with the global play button"/>
+                                    <CheckBox Grid.Row="0" Grid.Column="5" Margin="5,5,5,5"
+                                              VerticalAlignment="Center"
+                                              IsChecked="{Binding Autohide}" ToolTip="Autohide - Whether the mechanic will be hidden by default"/>
                                 </Grid>
                                 <!-- Step Level Display -->
                                 <ItemsControl ItemsSource="{Binding Steps}" Grid.Row="1" Grid.Column="0">

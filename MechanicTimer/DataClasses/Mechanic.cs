@@ -81,10 +81,21 @@ namespace MechanicTimer.DataClasses
             set
             {
                 autohide = value;
+                Visible = !value;
                 NotifyPropertyChanged();
             }
         }
 
+        private bool visible;
+        public bool Visible
+        {
+            get { return visible; }
+            set
+            {
+                visible = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private int currentTime;
         public int CurrentTime
@@ -192,6 +203,7 @@ namespace MechanicTimer.DataClasses
             Delay = 5;
             Autostart = true;
             Autohide = false;
+            Visible = !Autohide;
             Steps = new ObservableCollection<Step>();
 
             Index = 0;
@@ -207,6 +219,7 @@ namespace MechanicTimer.DataClasses
             Delay = 5;
             Autostart = true;
             Autohide = false;
+            Visible = !Autohide;
             Steps = new ObservableCollection<Step>() { new Step() };
 
             Index = 0;
@@ -222,6 +235,7 @@ namespace MechanicTimer.DataClasses
             Delay = delay;
             Autostart = autostart;
             Autohide = autohide;
+            Visible = !Autohide;
             Steps = new ObservableCollection<Step>(steps);
 
             Index = 0;
