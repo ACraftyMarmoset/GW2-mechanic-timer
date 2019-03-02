@@ -1,4 +1,6 @@
 # GW2-mechanic-timer
-A mechanics timer overlay for GW2
+A mechanics timer overlay for GW2.
 
-Still a WIP, some important things are missing but it *technically* works. Once I'm happy that it's release-ready I'll make a reddit post about it for anybody who's interested :)
+A pretty simple mechanics timer overlay for GW2. Allows you to add/edit new or existing encounters as needed, in case you feel so inclined. You can add in extra icons you might want to use into the ./Images folder wherever you have the .exe and those will be picked up too.
+
+Quick word of warning, any changes you make *at all* will be immediately saved so watch out for that!
