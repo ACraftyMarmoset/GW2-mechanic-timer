@@ -42,15 +42,45 @@ namespace MechanicTimer
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            ResourceCache.Instance.SaveEncounters();
-            Close();
+            var choice = MessageBox.Show(this, "Do you want to save your changes?", "Save changes?", MessageBoxButton.YesNoCancel);
+            if (choice != MessageBoxResult.Cancel)
+            {
+                if (choice == MessageBoxResult.Yes)
+                {
+                    ResourceCache.Instance.SaveEncounters();
+                }
+                Close();
+            }
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var mechanic in ResourceCache.Instance.CurrentEncounter?.Mechanics)
+            if (ResourceCache.Instance.CurrentEncounter != null)
             {
-                mechanic.Reset();
+                foreach (var mechanic in ResourceCache.Instance.CurrentEncounter.Mechanics)
+                {
+                    mechanic.Reset();
+                }
+            }
+        }
+
+        private void ReloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            var choice = MessageBox.Show(this, "Are you sure you want to reload all encounters? You will lose any changes you've made.",
+                                               "Reload Encounters?", MessageBoxButton.YesNo);
+            if (choice == MessageBoxResult.Yes)
+            {
+                ResourceCache.Instance.ReloadEncounters();
+            }
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var choice = MessageBox.Show(this, "Are you sure you want to delete this encounter? This cannot be undone.",
+                                               "Delete Encounter?", MessageBoxButton.YesNo);
+            if (choice == MessageBoxResult.Yes)
+            {
+                ResourceCache.Instance.RemoveEncounter();
             }
         }
 
@@ -85,7 +115,7 @@ namespace MechanicTimer
             {
                 foreach (var mechanic in ResourceCache.Instance.CurrentEncounter?.Mechanics)
                 {
-                    mechanic.Reset();
+                        mechanic.Reset();
                 }
             }
         }

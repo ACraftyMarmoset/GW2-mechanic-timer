@@ -19,6 +19,7 @@
         <BitmapImage x:Key="PauseIcon" UriSource="./Buttons/PauseLight.png"/>
         <BitmapImage x:Key="PinIcon" UriSource="./Buttons/PinLight.png"/>
         <BitmapImage x:Key="PlayIcon" UriSource="./Buttons/PlayLight.png"/>
+        <BitmapImage x:Key="RewindIcon" UriSource="./Buttons/RewindLight.png"/>
         <BitmapImage x:Key="SaveIcon" UriSource="./Buttons/SaveLight.png"/>
         <BitmapImage x:Key="StopIcon" UriSource="./Buttons/StopLight.png"/>
         <BitmapImage x:Key="UndoIcon" UriSource="./Buttons/UndoLight.png"/>
@@ -28,8 +29,8 @@
         <GridLength x:Key="DragBarButtonW">20</GridLength>
         <!-- DragBar Resources End -->
         <!-- Encounter Resources -->
-        <GridLength x:Key="cbxEncounterH">30</GridLength>
-        <GridLength x:Key="btnEncounterH">30</GridLength>
+        <GridLength x:Key="cbxEncounterH">32</GridLength>
+        <GridLength x:Key="btnEncounterH">32</GridLength>
         <!-- Encounter Resources End-->
         <!-- Mechanic Resources -->
         <GridLength x:Key="btnMechanicH">30</GridLength>
@@ -70,12 +71,17 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="{Binding Source={StaticResource DragBarButtonW}}"/>
                 <ColumnDefinition Width="{Binding Source={StaticResource DragBarButtonW}}"/>
+                <ColumnDefinition Width="{Binding Source={StaticResource DragBarButtonW}}"/>
             </Grid.ColumnDefinitions>
-            <ToggleButton Grid.Row="0" Grid.Column="1" Margin="2,2,2,2"
+            <ToggleButton x:Name="tgbEdit" Click="EditButton_Click"
+                          Grid.Row="0" Grid.Column="1" Margin="2,2,2,2">
+                <Image Source="{Binding Source={StaticResource EditIcon}}"/>
+            </ToggleButton>
+            <ToggleButton Grid.Row="0" Grid.Column="2" Margin="2,2,2,2"
                           Click="PinButton_Click">
                 <Image Source="{Binding Source={StaticResource PinIcon}}"/>
             </ToggleButton>
-            <Button Grid.Row="0" Grid.Column="2" Margin="2,2,2,2"
+            <Button Grid.Row="0" Grid.Column="3" Margin="2,2,2,2"
                     Click="ExitButton_Click">
                 <Image Source="{Binding Source={StaticResource CrossIcon}}"/>
             </Button>
@@ -99,16 +105,16 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ToggleButton x:Name="tgbEdit" Click="EditButton_Click"
-                          Grid.Row="0" Grid.Column="1" Margin="5,5,5,5">
-                <Image Source="{Binding Source={StaticResource EditIcon}}"/>
-            </ToggleButton>
-            <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
+            <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
                     Command="{Binding AddEncounterCommand}">
                 <Image Source="{Binding Source={StaticResource AddIcon}}"/>
             </Button>
+            <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
+                    Click="ReloadButton_Click">
+                <Image Source="{Binding Source={StaticResource UndoIcon}}"/>
+            </Button>
             <Button Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
-                    Command="{Binding RemoveEncounterCommand}">
+                    Click="DeleteButton_Click">
                 <Image Source="{Binding Source={StaticResource DeleteIcon}}"/>
             </Button>
         </Grid>
@@ -129,13 +135,15 @@
             </Button>
             <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5"
                         Click="ResetAllButton_Click">
-                <Image Source="{Binding Source={StaticResource UndoIcon}}"/>
+                <Image Source="{Binding Source={StaticResource RewindIcon}}"/>
             </Button>
         </Grid>
         <!-- Timer Controls End -->
         <!-- Encounter Level Controls End -->
         <!-- Main Encounter View -->
-        <ScrollViewer Grid.Row="3" Grid.Column="0" CanContentScroll="True" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="3" Grid.Column="0" Padding="5,0,5,0"
+                      CanContentScroll="True" VerticalScrollBarVisibility="Auto"
+                      Template="{StaticResource ScrollViewerControlTemplate}">
             <Grid>
                 <Grid>
                     <Grid.Style>
@@ -185,7 +193,7 @@
                                         </Button>
                                         <Button Grid.Row="0" Grid.Column="3" Margin="5,5,5,5"
                                         Command="{Binding ResetCommand}">
-                                            <Image Source="{Binding Source={StaticResource UndoIcon}}"/>
+                                            <Image Source="{Binding Source={StaticResource RewindIcon}}"/>
                                         </Button>
                                         <ToggleButton Grid.Row="0" Grid.Column="4" Margin="5,5,5,5"
                                               IsChecked="{Binding Visible}">
@@ -227,7 +235,7 @@
                                         <TextBlock Grid.Row="0" Grid.Column="1"
                                            VerticalAlignment="Center" HorizontalAlignment="Left"
                                            Text="{Binding CurrentStep.Description}"/>
-                                        <TextBlock Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" FontSize="24"
+                                        <TextBlock Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" FontSize="32"
                                            VerticalAlignment="Center" HorizontalAlignment="Right"
                                            Text="{Binding CurrentTime}">
                                             <TextBlock.Foreground>

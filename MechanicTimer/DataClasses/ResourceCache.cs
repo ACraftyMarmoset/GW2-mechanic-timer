@@ -36,8 +36,8 @@ namespace MechanicTimer.DataClasses
 
         public static ResourceCache Instance { get; } = new ResourceCache();
 
-        public ObservableCollection<Encounter> Encounters { get; set; }
-        public ObservableDictionary<string, BitmapImage> Icons { get; set; }
+        public ObservableCollection<Encounter> Encounters { get; private set; }
+        public ObservableDictionary<string, BitmapImage> Icons { get; private set; }
 
         private Encounter currentEncounter;
         public Encounter CurrentEncounter
@@ -67,19 +67,6 @@ namespace MechanicTimer.DataClasses
                     addEncounterCommand = new ButtonCommand(param => AddEncounter(), param => true);
                 }
                 return addEncounterCommand;
-            }
-        }
-
-        private ICommand removeEncounterCommand;
-        public ICommand RemoveEncounterCommand
-        {
-            get
-            {
-                if (removeEncounterCommand == null)
-                {
-                    removeEncounterCommand = new ButtonCommand(param => RemoveEncounter(), param => Encounters.Count > 1);
-                }
-                return removeEncounterCommand;
             }
         }
 
@@ -152,12 +139,30 @@ namespace MechanicTimer.DataClasses
             if (File.Exists(CONFIG_FILEPATH))
             {
                 var data = JsonConvert.DeserializeObject<ObservableCollection<Encounter>>(File.ReadAllText(CONFIG_FILEPATH));
-                Encounters =  data ?? new ObservableCollection<Encounter>() { new Encounter() };
+                Encounters = data ?? new ObservableCollection<Encounter>() { new Encounter() };
             }
             else
             {
                 File.Create(CONFIG_FILEPATH);
                 Encounters = new ObservableCollection<Encounter>() { new Encounter() };
+            }
+        }
+
+        public void ReloadEncounters()
+        {
+            Instance.Encounters.Clear();
+            if (File.Exists(CONFIG_FILEPATH))
+            {
+                var data = JsonConvert.DeserializeObject<ObservableCollection<Encounter>>(File.ReadAllText(CONFIG_FILEPATH));
+                foreach (var encounter in data)
+                {
+                    Instance.Encounters.Add(encounter);
+                }
+            }
+
+            if (Instance.Encounters.Count() > 0)
+            {
+                Instance.CurrentEncounter = Instance.Encounters[0];
             }
         }
     }
